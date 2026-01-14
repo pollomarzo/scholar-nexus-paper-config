@@ -1,0 +1,62 @@
+name: Deploy MyST Paper
+
+on:
+  workflow_call:
+    inputs:
+      environment-file:
+        description: 'Path to conda environment file'
+        required: false
+        type: string
+        default: 'environment.yml'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Setup Micromamba
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: ${{ inputs.environment-file }}
+          generate-run-shell: true
+          cache-environment: true
+          cache-downloads: true
+
+      - name: MyST build HTML
+        run: myst build --html
+        shell: micromamba-shell {0}
+
+      - name: MyST build exports (PDF, Typst)
+        run: myst build --all
+        shell: micromamba-shell {0}
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "_build/html"
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
