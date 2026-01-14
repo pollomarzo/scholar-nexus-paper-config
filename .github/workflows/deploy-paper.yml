@@ -8,6 +8,14 @@ on:
         required: false
         type: string
         default: 'environment.yml'
+      base_url:
+        description: 'Determines where the website is served from, including CSS & JS assets (needed for MyST)'
+        required: false
+        type: string
+        default: '/${{ github.event.repository.name }}'
+
+env:
+  BASE_URL: ${{ inputs.base_url }}
 
 permissions:
   contents: read
