@@ -10,4 +10,6 @@ dependencies:
 - mystmd
 - pyyaml
 - typst
-- tectonic
+- texlive-core
+- xetex
+- latexmk
