@@ -1,0 +1,11 @@
+version: 1
+
+extends:
+- https://raw.githubusercontent.com/pollomarzo/scholar-nexus-paper-config/main/paper-base.yml
+
+project:
+  venue: Climatematch 2023
+  license: CC-BY-4.0
+  open_access: true
+  funding: |
+    National Aeronautics and Space Administration
