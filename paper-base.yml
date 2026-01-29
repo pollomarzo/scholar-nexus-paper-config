@@ -1,6 +1,8 @@
 version: 1
 
 project:
+  # thumbnail fixed location is used by paper-gallery plugin
+  thumbnail: thumbnails/thumbnail.png
   exports:
   - format: typst
     id: typst-pdf
